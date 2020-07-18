@@ -11,6 +11,7 @@ const createFFS = async(req, res) => {
   if (user.status === 404) {
     try{
       const { token } = await powergate.ffs.create()
+      console.log(token)
       powergate.setToken(user.token)   
       user = await createWalletAccount({
         _id: address,

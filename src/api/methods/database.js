@@ -30,4 +30,27 @@ const createWalletAccount = (user) => {
   })
 }
 
-module.exports = { getWalletAccount, createWalletAccount }
+const updateWalletAccount = (address, user) => {
+  return new Promise((resolve, reject) => {
+    database.get(address, function (err, doc) {
+      if (err) {
+        console.log(err)
+        reject(err)
+      } else {
+        database.put({ ...doc, user }, function (err, response) {
+          if (err) {
+            console.log(err)
+            reject(err)
+          } else {
+            console.log('Document updated Successfully')
+            console.log(response)
+            resolve(response)
+          }
+        })
+      }
+    })
+  })
+}
+
+
+module.exports = { getWalletAccount, createWalletAccount, updateWalletAccount }
