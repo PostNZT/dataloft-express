@@ -1,8 +1,8 @@
 const { Router } = require('express')
-const { getToken } = require('@controllers/auth')
+const  createDataloftAccount = require('@controllers/auth')
 
 const authRouter = Router()
 
-authRouter.post('/generate', getToken)
+authRouter.post('/create', createDataloftAccount)
 
 module.exports = authRouter

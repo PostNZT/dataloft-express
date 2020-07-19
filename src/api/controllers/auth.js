@@ -1,19 +1,24 @@
 const jwt = require('jsonwebtoken')
+const createFFS = require('@modules/createFFS')
 const jwtKey = process.env.JWT_KEY
 
-const generateToken = (username, password, address) => {
-  const token = jwt.sign({ username, password, address}, jwtKey)
+const generateToken = (username, password, address, token) => {
+  const jwt_token = jwt.sign({ username, password, address, token}, jwtKey)
 
-  return { token }
+  return jwt_token
 }
 
-const getToken = (req, res) => {
-  const username = req.body.username
-  const password = req.body.password
-  const address = req.body.address
+const createDataloftAccount = async(req, res) => {
+  const {
+    username,
+    password,
+    address
+  } = req.body
 
-  const token = generateToken(username, password, address)
-  res.json(token)
+  const user = await createFFS(address)
+  const jwt_token = generateToken(username, password, user.address, user.token)
+
+  res.json(jwt_token)
 }
 
-module.exports = { getToken }
+module.exports = createDataloftAccount

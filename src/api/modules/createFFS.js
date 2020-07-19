@@ -3,12 +3,9 @@ const { getWalletAccount, createWalletAccount } = require('@methods/database')
 const POW_HOST = process.env.POW_HOST
 const powergate = createPow({ POW_HOST })
 
-
-const createFFS = async(req, res) => {
-  const address = req.body.address
+const createFFS = async(address) => {
   let user = await getWalletAccount(address)
   if (!user.token) {
-    console.log('pasook')
     try{
       const { token } = await powergate.ffs.create()
       powergate.setToken(token)   
@@ -23,8 +20,8 @@ const createFFS = async(req, res) => {
       console.log(e)
     }
   }
-
-  res.json(user)
+  console.log(user)
+  return user
 }
 
 module.exports = createFFS
