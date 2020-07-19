@@ -7,17 +7,18 @@ const powergate = createPow({ POW_HOST })
 const createFFS = async(req, res) => {
   const address = req.body.address
   let user = await getWalletAccount(address)
-  let TOKEN
-  if (user.status === 404) {
+  if (!user.token) {
+    console.log('pasook')
     try{
       const { token } = await powergate.ffs.create()
-      console.log(token)
-      powergate.setToken(user.token)   
+      powergate.setToken(token)   
       user = await createWalletAccount({
         _id: address,
         address,
         token: token
       })
+      console.log(token)
+      user.token = token
     } catch (e) {
       console.log(e)
     }
