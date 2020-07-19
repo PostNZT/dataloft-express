@@ -23,6 +23,7 @@
   "_moduleAliases": {
     "@modules": "src/api/modules",
     "@routes": "src/api/routes",
-    "@methods": "src/api/methods"
+    "@methods": "src/api/methods",
+    "@controllers": "src/api/controllers"
   }
 }

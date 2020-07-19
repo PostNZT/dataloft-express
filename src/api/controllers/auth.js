@@ -6,3 +6,14 @@ const generateToken = (username, password, address) => {
 
   return { token }
 }
+
+const getToken = (req, res) => {
+  const username = req.body.username
+  const password = req.body.password
+  const address = req.body.address
+
+  const token = generateToken(username, password, address)
+  res.json(token)
+}
+
+module.exports = { getToken }
