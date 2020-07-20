@@ -14,7 +14,6 @@ const createFFS = async(address) => {
         address,
         token: token
       })
-      console.log(token)
       user.token = token
     } catch (e) {
       console.log(e)
