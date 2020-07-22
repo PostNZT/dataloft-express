@@ -9,9 +9,9 @@ const createFFSMetamaskAccount = async(powergate, address) => {
       user = await createWalletAccount({
         _id: address,
         address,
-        token: token
+        token
       })
-      user.token = token
+      user = await getWalletAccount(user.id)
     } catch (e) {
       console.log(e)
     }
