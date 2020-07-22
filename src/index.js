@@ -15,4 +15,4 @@ app.use(bodyParser.json({limit: '50mb' }))
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
 
 app.use('/api/v1', api)
-app.listen(port, () => console.log(`SERVER RUNNING ON http://51.89.229.229:${port}`))
+app.listen(port, () => console.log(`SERVER RUNNING ON http://localhost:${port}`))
