@@ -6,7 +6,7 @@ const  {
 
 const authRouter = Router()
 
-authRouter.post('/create', createDataloftAccount)
+authRouter.post('/create/dataloft', createDataloftAccount)
 authRouter.post('/create/metamask', createMetamaskAccount)
 
 module.exports = authRouter

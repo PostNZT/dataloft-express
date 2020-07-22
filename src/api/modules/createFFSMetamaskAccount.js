@@ -1,6 +1,6 @@
 const { getWalletAccount, createWalletAccount } = require('@methods/database')
 
-const createFFS = async(powergate, address) => {
+const createFFSMetamaskAccount = async(powergate, address) => {
   let user = await getWalletAccount(address)
   if (!user.token) {
     try{
@@ -20,5 +20,5 @@ const createFFS = async(powergate, address) => {
   return user
 }
 
-module.exports = createFFS
+module.exports = createFFSMetamaskAccount
 
