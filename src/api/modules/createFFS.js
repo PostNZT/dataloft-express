@@ -1,9 +1,6 @@
-const { createPow } = require('@textile/powergate-client')
 const { getWalletAccount, createWalletAccount } = require('@methods/database')
-const POW_HOST = process.env.POW_HOST
-const powergate = createPow({ POW_HOST })
 
-const createFFS = async(address) => {
+const createFFS = async(powergate, address) => {
   let user = await getWalletAccount(address)
   if (!user.token) {
     try{

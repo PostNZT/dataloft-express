@@ -12,13 +12,28 @@ const createDataloftAccount = async(req, res) => {
   const {
     username,
     password,
-    address
   } = req.body
 
-  const user = await createFFS(address)
+  const powergate = req.powergate
+  const { addr } = await powergate.ffs.newAddr()
+  console.log({addr})
+  const user = await createFFS(addr)
   const jwt_token = generateToken(username, password, user.address, user.token)
 
   res.json(jwt_token)
 }
 
-module.exports = createDataloftAccount
+const createMetamaskAccount = async(req, res) => {
+  const {
+    username,
+    password,
+    address
+  } = req.body
+  const powergate = req.powergate
+  const user = await createFFS(powergate, address)
+  const jwt_token = generateToken(username, password, user.address, user.token)
+
+  res.json(jwt_token)
+}
+
+module.exports = { createDataloftAccount, createMetamaskAccount }

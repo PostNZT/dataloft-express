@@ -24,6 +24,7 @@
     "@modules": "src/api/modules",
     "@routes": "src/api/routes",
     "@methods": "src/api/methods",
-    "@controllers": "src/api/controllers"
+    "@controllers": "src/api/controllers",
+    "@middlewares": "src/api/middlewares"
   }
 }
