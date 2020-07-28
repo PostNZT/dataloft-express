@@ -35,4 +35,20 @@ const createMetamaskAccount = async(req, res) => {
   res.json(jwt_token)
 }
 
-module.exports = { createDataloftAccount, createMetamaskAccount }
+const getMetamaskAddress = async(req, res) => {
+  const {
+    address
+  } = req.body
+  console.log(address)
+
+  
+  const metamask = {
+    "address": address,
+    "is_authenticated": true
+  }
+
+  res.json(metamask)
+
+}
+
+module.exports = { createDataloftAccount, createMetamaskAccount, getMetamaskAddress }
