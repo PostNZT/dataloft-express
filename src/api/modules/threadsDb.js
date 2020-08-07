@@ -1,10 +1,11 @@
 const {Database} = require("@textile/threads-database")
 const ThreadID = require("@textile/threads-id")
 const {collect} = require("streaming-iterables")
+const {Client} = require("@textile/threads-client")
 
-const keyinfo = {key: 'bf5bmop3o7kzbwpt6s5w3jrhkau'}
+const keyinfo = {key: 'b5ooffdsnc4nrdraiiwglkuxe5y'}
 
-const identity = process.env.THREAD_DB_ID
+const identity = 'bafy2bzaceciaiyknlevym7e7qi3bbs5o4p25tvrvwhneyorecu2qgzsa4tako'
 
 const obj = {
   _id: '',
@@ -12,7 +13,8 @@ const obj = {
   user: '',
   pubEncrypt: '',
   encryptedKeys: '',
-  filcoinTx: ''
+  filcoinTx: '',
+  rand: '',
 }
 
 const level = require("level");
@@ -22,8 +24,14 @@ class threadsDb {
     this.name = name
   }
 
-  async createThreadDB() {
-    const db = await Database.withKeyInfo(keyinfo, "Dataloft-dev", undefined, undefined)
+    async authorize (identity) {
+    const client = await Client.withKeyInfo(keyinfo)
+    await client.getToken(identity)
+    return client
+  }
+
+    async createThreadDB() {
+    const db = await Database.withKeyInfo(keyinfo, "dataloft", undefined, undefined)
     console.log(db)
     return db
     /*await db.close()
@@ -33,27 +41,30 @@ class threadsDb {
   */
   }
 
-  async start(Database) {
+  async start(Database, identity) {
     // const threadID = ThreadID.fromRandom()
-    const db = Database.start(identity)
-    console.log("db " + db)
+    // const close = await Database.close()
+    // console.log({close})
+    const db = await Database.start(identity)
+    console.log({db})
     return db
   }
 
-  async collectionFromObject(db){
-    const {collections} = db
-    const existing = collections.get('Users')
-    if (existing) {
-      return existing
-    } else {
-      return await db.newCollectionFromObject('Users', obj)
-    }
+   async collectionFromObject(db){
+      const existing = await db.collections.get('Users')
+      console.log({existing})
+      if (existing) {
+         return existing
+      } else {
+        const col = await db.newCollectionFromObject('Users', obj)
+         return col
+      }
   }
 
   async addUser(db, data){
     const Users = await db.collections.get('Users')
     if (!Users) throw new Error('Collection does not exist')
-    console.log(Users)
+    console.log({Users})
     const status = await Users.insert(
       {
         _id: '',
@@ -61,17 +72,21 @@ class threadsDb {
         user: data.user,
         pubEncrypt: data.pubEncrypt,
         encryptedKeys: data.encryptedKeys,
-        filecoinTx: data.filecoinTx
+        filecoinTx: data.filecoinTx,
+        rand: Math.random().toString(),
       },
     )
-    console.log(status)
+    await db.close()
+    const thread = await threadDb.start(db, identity)
+    console.log({status})
+    return status
   }
 
   async createQuery(db, username){
     console.log(db)
-    const Users = db.collections.get('Users')
+    const Users = await db.collections.get('Users')
     if (!Users) throw new Error('Collection does not exist')
-
+    console.log({Users})
     // Setup a query
     const query = {
       $or: [
@@ -80,10 +95,20 @@ class threadsDb {
     }
     // Get results
     const all = await Users.find(query)
-    // Loop over AsyncIterableIterator result and log the names
+    // const find =  new Promise((resolve, reject) => {
+    //   Users.find(query, (result) => {
+    //     resolve(result)
+    //   })
+    // })
+
+    // const all = await Promise.all([find])
+    //Loop over AsyncIterableIterator result and log the names
     for (const {key, value} of await collect(all)) {
       console.log(`${key.toString()}: ${value.user}`)
+      return true
     }
+    return false
+
   }
 }
 

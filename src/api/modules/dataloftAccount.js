@@ -9,48 +9,51 @@ class dataloftAccount{
       user: username,
       pubEncrypt: pubEncrypt,
       encryptedKeys: encryptedKeys,
-      filecoinTx: filecoinTx
+      filecoinTx: filecoinTx,
     }
-    /** Random new identity */
-    const identity = await Libp2pCryptoIdentity.fromRandom()
-
-    /** Convert to string. */
-    //const identityString = await identity.toString()
-
-    /** Restore an identity object from a string */
-    // const restored = Libp2pCryptoIdentity.fromString(identityString)
-    // console.log(restored)
+    console.log({data})
+    const key = 'bbaareycsvhl4ykaj35mva6hvu2qjk6kvhin53dczo5unepfhtjln65djrttqv3vcp6pbo25olxf3wevrljaevsumb4o25jj2cpckonuifbd6rzyk52rh7hqxnoxf3s53ckyvuqckzkga6hnouu5bhrfhg2ecqr7i'
+    const identity = await Libp2pCryptoIdentity.fromString(key)
+    const auth = threadDb.authorize(identity)
+    console.log({auth})
     const db = await threadDb.createThreadDB()
-    await threadDb.start(db, identity)
-    await threadDb.collectionFromObject(db)
+    console.log({db})
+    const thread = await threadDb.start(db, identity)
+    console.log({thread})
+    const col = await threadDb.collectionFromObject(db)
+    console.log({col})
     const query = await threadDb.createQuery(db, username)
-    if (query && query.length > 0)
+    console.log({query})
+    if (query == true)
     {
-      const auth = false
-      return auth
+      await db.close()
+      return false
     }else {
-      const addUser = threadDb.addUser(db, data)
-      const auth = true
-      return auth
+      await threadDb.addUser(db, data)
+      await db.close()
+      return true
     }
   }
 
   async userAuth(username){
     const key = 'bbaareycsvhl4ykaj35mva6hvu2qjk6kvhin53dczo5unepfhtjln65djrttqv3vcp6pbo25olxf3wevrljaevsumb4o25jj2cpckonuifbd6rzyk52rh7hqxnoxf3s53ckyvuqckzkga6hnouu5bhrfhg2ecqr7i'
     const identity = await Libp2pCryptoIdentity.fromString(key)
-
+    console.log({identity})
     const db = await threadDb.createThreadDB()
-    await threadDb.start(db, identity)
-    await threadDb.collectionFromObject(db)
+    console.log({db})
+    const start = await threadDb.start(db, identity)
+    console.log({start})
+    const col = await threadDb.collectionFromObject(db)
+    console.log({col})
     const query = await threadDb.createQuery(db, username)
-    console.log(query)
-    if (query && query.length > 0)
+    console.log({query})
+    if (query == true)
     {
-      const auth = true
-      return auth
+      await db.close()
+      return true
     }else {
-      const auth = false
-      return auth
+      await db.close()
+      return false
     }
   }
 }
