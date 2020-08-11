@@ -4,14 +4,14 @@ const {Libp2pCryptoIdentity} = require('@textile/threads-core');
 const identityKey = process.env.THREAD_DB_ID
 class dataloftAccount{
 
-  async newAccount(username, hashPass, pubEncrypt, encryptedKeys){
+  async newAccount(username, hashPass, pubEncrypt, encryptedKeys, filecoinTx){
     console.log(hashPass)
     const data = {
       user: username,
       hashPass: hashPass,
       pubEncrypt: pubEncrypt,
       encryptedKeys: encryptedKeys,
-      filecoinTx: '',
+      filecoinTx: filecoinTx,
     }
     console.log({data})
     const key = 'bbaareycsvhl4ykaj35mva6hvu2qjk6kvhin53dczo5unepfhtjln65djrttqv3vcp6pbo25olxf3wevrljaevsumb4o25jj2cpckonuifbd6rzyk52rh7hqxnoxf3s53ckyvuqckzkga6hnouu5bhrfhg2ecqr7i'
