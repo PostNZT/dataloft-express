@@ -4,12 +4,14 @@ const {Libp2pCryptoIdentity} = require('@textile/threads-core');
 const identityKey = process.env.THREAD_DB_ID
 class dataloftAccount{
 
-  async newAccount(username, pubEncrypt, encryptedKeys, filecoinTx){
+  async newAccount(username, hashPass, pubEncrypt, encryptedKeys){
+    console.log(hashPass)
     const data = {
       user: username,
+      hashPass: hashPass,
       pubEncrypt: pubEncrypt,
       encryptedKeys: encryptedKeys,
-      filecoinTx: filecoinTx,
+      filecoinTx: '',
     }
     console.log({data})
     const key = 'bbaareycsvhl4ykaj35mva6hvu2qjk6kvhin53dczo5unepfhtjln65djrttqv3vcp6pbo25olxf3wevrljaevsumb4o25jj2cpckonuifbd6rzyk52rh7hqxnoxf3s53ckyvuqckzkga6hnouu5bhrfhg2ecqr7i'
@@ -24,6 +26,7 @@ class dataloftAccount{
     console.log({col})
     const query = await threadDb.createQuery(db, username)
     console.log({query})
+    console.log(username)
     if (query == true)
     {
       await db.close()
@@ -35,7 +38,7 @@ class dataloftAccount{
     }
   }
 
-  async userAuth(username){
+  async userAuth(username, hashPass){
     const key = 'bbaareycsvhl4ykaj35mva6hvu2qjk6kvhin53dczo5unepfhtjln65djrttqv3vcp6pbo25olxf3wevrljaevsumb4o25jj2cpckonuifbd6rzyk52rh7hqxnoxf3s53ckyvuqckzkga6hnouu5bhrfhg2ecqr7i'
     const identity = await Libp2pCryptoIdentity.fromString(key)
     console.log({identity})
@@ -48,7 +51,8 @@ class dataloftAccount{
     console.log({col})
     const query = await threadDb.createQuery(db, username)
     console.log({query})
-    if (query == true)
+    console.log(hashPass)
+    if (query.hashPass == hashPass)
     {
       await db.close()
       return true

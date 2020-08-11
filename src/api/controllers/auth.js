@@ -12,12 +12,14 @@ const generateToken = (username, password, address, token) => {
 const createDataloftAccount = async(req, res) => {
   const {
     username,
+    hashPass,
     pubEncrypt,
     encryptedKeys,
     filecoinTx
   } = req.body
+  console.log(hashPass)
   const dataloft = await new dataloftAccounts
-  const is_authenticated = await dataloft.newAccount(username, pubEncrypt, encryptedKeys, filecoinTx)
+  const is_authenticated = await dataloft.newAccount(username, hashPass, pubEncrypt, encryptedKeys, filecoinTx)
 
   // const powergate = req.powergate
   // const user = await createFFSDataloftAccount(powergate)
@@ -34,15 +36,15 @@ const createDataloftAccount = async(req, res) => {
 const authDataloftAccount = async(req, res) => {
   const {
        username,
-       password,
+       hashPass,
   } = req.body
   const dataloft = await new dataloftAccounts
-  const is_authenticated = await dataloft.userAuth(username)
+  const is_authenticated = await dataloft.userAuth(username, hashPass)
 
   // const powergate = req.powergate
   // const user = await createFFSDataloftAccount(powergate)
 
-  const jwt_token = generateToken(username, password)
+  const jwt_token = generateToken(username, hashPass)
   const authRes = {
     token: jwt_token,
     is_authenticated

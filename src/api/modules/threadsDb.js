@@ -11,6 +11,7 @@ const obj = {
   _id: '',
   account: 'Dataloft',
   user: '',
+  hashPass: '',
   pubEncrypt: '',
   encryptedKeys: '',
   filcoinTx: '',
@@ -31,14 +32,13 @@ class threadsDb {
   }
 
     async createThreadDB() {
-    const db = await Database.withKeyInfo(keyinfo, "dataloft", undefined, undefined)
+    const db = await Database.withKeyInfo(keyinfo, "dev-dataloft-cloud", undefined, undefined)
     console.log(db)
     return db
-    /*await db.close()
+    await db.close()
     // This will actually "destroy" the database. This is handy here because we're "switching" rooms.
     // But it might NOT be want you want in a real-world app!
-    level.destroy("dbName")
-  */
+    // level.destroy("dataloft")
   }
 
   async start(Database, identity) {
@@ -70,6 +70,7 @@ class threadsDb {
         _id: '',
         account: 'Dataloft',
         user: data.user,
+        hashPass: data.hashPass,
         pubEncrypt: data.pubEncrypt,
         encryptedKeys: data.encryptedKeys,
         filecoinTx: data.filecoinTx,
@@ -77,7 +78,7 @@ class threadsDb {
       },
     )
     await db.close()
-    const thread = await threadDb.start(db, identity)
+    const thread = await db.start(db, identity)
     console.log({status})
     return status
   }
@@ -105,7 +106,7 @@ class threadsDb {
     //Loop over AsyncIterableIterator result and log the names
     for (const {key, value} of await collect(all)) {
       console.log(`${key.toString()}: ${value.user}`)
-      return true
+      return value
     }
     return false
 
