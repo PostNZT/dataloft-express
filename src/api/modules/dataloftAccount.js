@@ -39,6 +39,7 @@ class dataloftAccount{
     const key = 'bbaareycsvhl4ykaj35mva6hvu2qjk6kvhin53dczo5unepfhtjln65djrttqv3vcp6pbo25olxf3wevrljaevsumb4o25jj2cpckonuifbd6rzyk52rh7hqxnoxf3s53ckyvuqckzkga6hnouu5bhrfhg2ecqr7i'
     const identity = await Libp2pCryptoIdentity.fromString(key)
     console.log({identity})
+    const auth = threadDb.authorize(identity)
     const db = await threadDb.createThreadDB()
     console.log({db})
     const start = await threadDb.start(db, identity)
