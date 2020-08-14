@@ -32,7 +32,7 @@ class threadsDb {
   }
 
     async createThreadDB() {
-    const db = await Database.withKeyInfo(keyinfo, "dev-dataloft-cloud", undefined, undefined)
+    const db = await Database.withKeyInfo(keyinfo, "clk-dataloft-cloud", undefined, undefined)
     console.log(db)
     return db
     await db.close()
